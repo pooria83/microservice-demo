@@ -4,9 +4,11 @@ namespace App\Exceptions;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -49,6 +51,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException )
+        {
+            return $request->expectsJson()
+            ? new JsonResponse([
+                'status' => false,
+                'result' => 'Route or Model Not Found'
+            ], 404)
+            : parent::render($request, $exception);
+        }
         return parent::render($request, $exception);
     }
 }
