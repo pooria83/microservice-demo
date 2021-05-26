@@ -13,6 +13,8 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->group(['prefix' => 'v1/user' , 'namespace' => 'v1'] , function() use ($router) {
+
+    $router->post('/login' , 'UserController@login');
+    $router->post('/register' , 'UserController@register');
 });
