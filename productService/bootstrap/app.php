@@ -23,9 +23,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +80,13 @@ $app->configure('app');
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
 
+$app->routeMiddleware([
+    'token_check' => App\Http\Middleware\ApiTokenMiddleware::class,
+    'admin_check' => App\Http\Middleware\CheckAdminUserMiddleware::class
+]);
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -107,6 +114,7 @@ $app->configure('app');
 */
 
 $app->router->group([
+    'prefix' => 'api',
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
