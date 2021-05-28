@@ -82,7 +82,9 @@ $app->configure('app');
 
 $app->routeMiddleware([
     'token_check' => App\Http\Middleware\ApiTokenMiddleware::class,
-    'admin_check' => App\Http\Middleware\CheckAdminUserMiddleware::class
+    'admin_check' => App\Http\Middleware\CheckAdminUserMiddleware::class,
+    'update_and_delete_check' =>App\Http\Middleware\CheckForUpdateAndDeleteMiddleware::class,
+    'show_product' => App\Http\Middleware\ShowProductMiddleware::class
 ]);
 
 
