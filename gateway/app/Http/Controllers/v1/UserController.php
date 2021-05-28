@@ -2,17 +2,10 @@
 
 namespace App\Http\Controllers\v1;
 
-use App\Exceptions\DbErrorException;
-use App\Exceptions\LoginErrorException;
-use App\Exceptions\ValidationErrorException;
+
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Traits\ApiResponser;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use App\Services\UserService;
 
 

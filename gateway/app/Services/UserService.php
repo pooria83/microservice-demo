@@ -30,7 +30,7 @@ class UserService
 
 
     /**
-     * Obtain the full list of author from the author service
+     * Login user
      */
     public function login($request)
     {
@@ -42,7 +42,7 @@ class UserService
     }
 
     /**
-     * Create Author
+     * User Registeration
      */
     public function register($request)
     {
