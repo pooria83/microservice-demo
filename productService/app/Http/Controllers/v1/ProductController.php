@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\v1;
 
+
+
 use App\Models\Product;
 use App\Traits\ApiResponser;
 use App\Exceptions\DbErrorException;
@@ -13,9 +15,9 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Dusterio\LinkPreview\Client;
+
 
 class ProductController extends Controller
 {
@@ -36,7 +38,7 @@ class ProductController extends Controller
             throw new ValidationErrorException($validate->errors()->messages());
         }
         try {
-            $product_id =   Product::insertGetId([
+            $product_id = Product::insertGetId([
                 'url' => $request->input('url'),
                 'title' => $request->input('title'),
                 'description' => $request->input('title'),
@@ -75,11 +77,9 @@ class ProductController extends Controller
         }
 
         return [
-            'status' => true ,
+            'status' => true,
             'result' =>  new ProductCollection($products)
         ];
-
-
     }
 
     public function edit(Request $request)
@@ -139,7 +139,7 @@ class ProductController extends Controller
     public function single(Request $request)
     {
         try {
-          $product =   Product::find($request->input('product_id'));
+            $product =   Product::find($request->input('product_id'));
         } catch (QueryException $exception) {
             throw new DbErrorException($exception->errorInfo);
         }
@@ -147,6 +147,32 @@ class ProductController extends Controller
             'status' => true,
             'result' =>   new V1Product($product)
         ];
+    }
 
+    public function public_link(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'id' => 'required|numeric|min:1'
+        ]);
+        if ($validate->fails()) {
+            throw new ValidationErrorException($validate->errors()->messages());
+        }
+
+        try {
+            $product = Product::find($request->input('id'));
+        } catch (QueryException $exception) {
+            throw new DbErrorException($exception->errorInfo);
+        }
+        $previewClient = new  Client('https://www.boogiecall.com/en/Melbourne');
+
+        // Get previews from all available parsers
+        $previews = $previewClient->getPreviews();
+
+        // Get a preview from specific parser
+        $preview = $previewClient->getPreview('general');
+        dd($preview);
+
+        // Convert output to array
+        $preview = $preview->toArray();
     }
 }
