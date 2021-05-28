@@ -10,26 +10,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class Product_user extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
     use SoftDeletes;
+    protected $table = 'product_user';
+
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'user_type' , 'api_token' , 'password'
-    ];
+
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = [
-        'password', 'api_token'
-    ];
+
+     public function product()
+     {
+         return $this->belongsTo(Product::class);
+     }
+
+
+
 
 }
+
