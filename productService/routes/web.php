@@ -14,13 +14,13 @@
 */
 
 $router->group(['prefix' => 'v1/product', 'namespace' => 'v1'], function () use ($router) {
+    $router->post('/public_link', 'ProductController@public_link');
     $router->group(['middleware' => 'token_check'], function () use ($router) {
-        $router->get('/public_link', 'ProductController@public_link');
         $router->group(['middleware' => 'admin_check'], function () use ($router) {
             $router->post('/submit', 'ProductController@store');
-            $router->get('/get_list', 'ProductController@list');
-            $router->post('/single' , 'ProductController@single');
-            $router->get('/check_view', 'Product_UserController@check_view_count');
+            $router->post('/get_list', 'ProductController@list');
+            // $router->post('/single' , 'ProductController@single');
+            $router->post('/check_view', 'Product_UserController@check_view_count');
             $router->group(['middleware' => 'update_and_delete_check'], function () use ($router) {
                 $router->post('/edit', 'ProductController@edit');
                 $router->post('/delete', 'ProductController@delete');

@@ -95,10 +95,11 @@ class ProductService
 
      public function single($request)
      {
-        $data['user_id'] = $request->input('user_type');
-         $data['product_id'] = $request->input('product_id');
+        $data['token'] = $request->token;
+        $data['product_id'] = $request->product_id;
 
-         return $this->performRequest('POST', '/api/v1/product/single', $data);
+
+         return $this->performRequest('POST', '/api/v1/product/product', $data);
 
      }
 
@@ -108,7 +109,7 @@ class ProductService
 
       public function public_link($request)
       {
-        $data['id'] = $request->input('id');
+        $data['id'] = $request->product_id;
 
         return $this->performRequest('POST', '/api/v1/product/public_link', $data);
 

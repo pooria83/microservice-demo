@@ -151,6 +151,7 @@ class ProductController extends Controller
 
     public function public_link(Request $request)
     {
+
         $validate = Validator::make($request->all(), [
             'id' => 'required|numeric|min:1'
         ]);
